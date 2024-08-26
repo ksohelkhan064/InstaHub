@@ -10,6 +10,7 @@ import CreatePost from './CreatePost'
 import { setPosts, setSelectedPost } from '@/redux/postSlice'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Button } from './ui/button'
+import { clearLikeNotifications } from '@/redux/rtnSlice'
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
@@ -17,8 +18,8 @@ const LeftSidebar = () => {
     const { likeNotification } = useSelector(store => store.realTimeNotification);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-
-
+    const [notificationsOpen, setNotificationsOpen] = useState(false); // [1] State to manage popover open/close
+    
     const logoutHandler = async () => {
         try {
             const res = await axios.get('http://localhost:8000/api/v1/user/logout', { withCredentials: true });
@@ -45,7 +46,7 @@ const LeftSidebar = () => {
             navigate("/");
         } else if (textType === 'Messages') {
             navigate("/chat");
-        }
+        } 
     }
 
     const sidebarItems = [
@@ -81,7 +82,12 @@ const LeftSidebar = () => {
                                     <span>{item.text}</span>
                                     {
                                         item.text === "Notifications" && likeNotification.length > 0 && (
-                                            <Popover>
+                                            <Popover  open={notificationsOpen} // [2] Control the popover open state
+                                                      onOpenChange={(open) => {
+                                                     setNotificationsOpen(open); // [3] Toggle open state
+                                                     if (!open) dispatch(clearLikeNotifications()); // [4] Clear notifications when closing
+                                            }}
+                                            >
                                                 <PopoverTrigger asChild>
                                                     <Button size='icon' className="rounded-full h-5 w-5 bg-red-600 hover:bg-red-600 absolute bottom-6 left-6">{likeNotification.length}</Button>
                                                 </PopoverTrigger>
