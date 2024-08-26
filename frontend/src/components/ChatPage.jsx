@@ -16,6 +16,7 @@ const ChatPage = () => {
     const dispatch = useDispatch();
 
     const sendMessageHandler = async (receiverId) => {
+        
         // Prevent sending empty messages
         if (textMessage.trim() === "") return;
 
@@ -41,7 +42,9 @@ const ChatPage = () => {
         }
     },[]);
 
-    // New function to handle Enter key press
+    
+
+    // New function to handle Enter key press: on pressing enter send message
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             sendMessageHandler(selectedUser?._id);
@@ -91,6 +94,7 @@ const ChatPage = () => {
                             <Input
                                 value={textMessage}
                                 onChange={(e) => setTextMessage(e.target.value)}
+                                
                                 onKeyDown={handleKeyPress} // Added this line
                                 type="text"
                                 className='flex-1 mr-2 focus-visible:ring-transparent'
