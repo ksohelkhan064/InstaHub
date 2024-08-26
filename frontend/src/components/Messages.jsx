@@ -12,9 +12,10 @@ const Messages = ({ selectedUser }) => {
     const {messages} = useSelector(store=>store.chat);
     const {user} = useSelector(store=>store.auth);
 
+    
+    
+    // ? on seding new message direct jump to bottom
     const endOfMessagesRef = useRef(null);
-
-    // Scroll to the bottom of the chat container
     useEffect(() => {
         endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]); // Dependency on messages to trigger scroll when messages change
@@ -44,6 +45,7 @@ const Messages = ({ selectedUser }) => {
                         )
                     })
                 }
+
                 {/* used for the auto scroll when new message is coming */}
 
                 <div ref={endOfMessagesRef} />  
