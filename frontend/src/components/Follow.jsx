@@ -1,63 +1,74 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'sonner';  // or any other notification library you're using
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner"; // or any other notification library you're using
+import { useDispatch, useSelector } from "react-redux";
 
 // use this when you want to store follwoing in store
-import { updateFollowing } from '@/redux/authSlice'; // Adjust path if necessary
+import { updateFollowing } from "@/redux/authSlice"; // Adjust path if necessary
 
 const Follow = ({ userIdToFollow }) => {
-    const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-    const [isFollowing, setIsFollowing] = useState(user?.following.includes(userIdToFollow));
+  const [isFollowing, setIsFollowing] = useState(
+    user?.following.includes(userIdToFollow)
+  );
 
-    const followHandler = async () => {
-        try {
-            const res = await axios.post(`http://localhost:8000/api/v1/user/followorunfollow/${userIdToFollow}`, {}, { withCredentials: true });
+  const followHandler = async () => {
+    try {
+      const res = await axios.post(
+        `https://instahub-tvsa.onrender.com/api/v1/user/followorunfollow/${userIdToFollow}`,
+        {},
+        { withCredentials: true }
+      );
 
-            if (res.data.success) {
-                setIsFollowing(true);
+      if (res.data.success) {
+        setIsFollowing(true);
 
-                // uncomment it when you use store for the tracking of following and unfollowing
+        // uncomment it when you use store for the tracking of following and unfollowing
 
-                dispatch(updateFollowing({ userId: userIdToFollow, actionType: 'follow' }));
-                toast.success(res.data.message);
-            } else {
-                toast.error(res.data.message);
-            }
-        } catch (error) {
-            console.error('Error following user:', error);
-            toast.error('Failed to follow user');
-        }
-    };
+        dispatch(
+          updateFollowing({ userId: userIdToFollow, actionType: "follow" })
+        );
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error("Error following user:", error);
+      toast.error("Failed to follow user");
+    }
+  };
 
-    const unfollowHandler = async () => {
-        try {
-            const res = await axios.post(`http://localhost:8000/api/v1/user/followorunfollow/${userIdToFollow}`, {}, { withCredentials: true });
+  const unfollowHandler = async () => {
+    try {
+      const res = await axios.post(
+        `https://instahub-tvsa.onrender.com/api/v1/user/followorunfollow/${userIdToFollow}`,
+        {},
+        { withCredentials: true }
+      );
 
-            if (res.data.success) {
-                setIsFollowing(false);
-                 // uncomment it when you use store for the tracking of following and unfollowing
+      if (res.data.success) {
+        setIsFollowing(false);
+        // uncomment it when you use store for the tracking of following and unfollowing
 
-                dispatch(updateFollowing({ userId: userIdToFollow, actionType: 'unfollow' }));
-                toast.success(res.data.message);
-            } else {
-                toast.error(res.data.message);
-            }
-        } catch (error) {
-            console.error('Error unfollowing user:', error);
-            toast.error('Failed to unfollow user');
-        }
-    };
+        dispatch(
+          updateFollowing({ userId: userIdToFollow, actionType: "unfollow" })
+        );
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error("Error unfollowing user:", error);
+      toast.error("Failed to unfollow user");
+    }
+  };
 
-    return (
-        <span
-            onClick={isFollowing ? unfollowHandler : followHandler}
-            
-        >
-            {isFollowing ? 'Unfollow' : 'Follow'}
-        </span>
+  return (
+    <span onClick={isFollowing ? unfollowHandler : followHandler}>
+      {isFollowing ? "Unfollow" : "Follow"}
+    </span>
 
     //     isFollowing ?
     //     <span
@@ -65,28 +76,23 @@ const Follow = ({ userIdToFollow }) => {
     //         className='text-[#3BADF8] text-xs font-bold cursor-pointer hover:text-[#3495d6]'
     //     >
     //         UnFollow
-    //     </span>  : 
-        
+    //     </span>  :
+
     //     <span
     //     onClick={followHandler}
     //     className='text-[#3BADF8] text-xs font-bold cursor-pointer hover:text-[#3495d6]'
     // >
     //     Follow
     // </span>
-
-
-    );
+  );
 };
 
 export default Follow;
-
-
 
 // import React, { useState, useEffect } from "react";
 // import axios from "axios";
 // import { toast } from "sonner"; // Notification library
 // import { useSelector } from "react-redux";
-
 
 // const Follow = ({ userIdToFollow }) => {
 //     const { user } = useSelector(state => state.auth);
@@ -98,7 +104,7 @@ export default Follow;
 //     const fetchFollowStatus = async () => {
 //       try {
 //         const response = await axios.get(
-//           `http://localhost:8000/api/v1/user/followorunfollow/${userIdToFollow}`,
+//           `https://instahub-tvsa.onrender.com/api/v1/user/followorunfollow/${userIdToFollow}`,
 //           { withCredentials: true }
 //         );
 //         setIsFollowing(response.data.isFollowing);
@@ -115,7 +121,7 @@ export default Follow;
 
 //     try {
 //       const response = await axios.post(
-//         `http://localhost:8000/api/v1/user/followorunfollow/${userIdToFollow}`,
+//         `https://instahub-tvsa.onrender.com/api/v1/user/followorunfollow/${userIdToFollow}`,
 //         {},
 //         { withCredentials: true }
 //       );
